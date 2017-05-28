@@ -53,7 +53,7 @@ public class Superkoalio extends ApplicationAdapter {
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
-	private Texture koalaTexture;
+	private Texture koalaTexture, koalaTexture2;
 	private Animation<TextureRegion> stand;
 	private Animation<TextureRegion> walk;
 	private Animation<TextureRegion> jump;
@@ -75,11 +75,15 @@ public class Superkoalio extends ApplicationAdapter {
 	public void create () {
 		// load the koala frames, split them, and assign them to Animations
 		koalaTexture = new Texture("koalio.png");
-		TextureRegion[] regions = TextureRegion.split(koalaTexture, 18, 26)[0];
+		koalaTexture2 = new Texture("koalioJump.png");
+		TextureRegion[] regions = TextureRegion.split(koalaTexture, 18, 30)[0];
+		TextureRegion[] jumpRegion = TextureRegion.split(koalaTexture2, 30, 35)[0];
+
 		stand = new Animation(0, regions[0]);
-		jump = new Animation(0, regions[1]);
+		jump = new Animation(0.09f, jumpRegion[4], jumpRegion[3], jumpRegion[2], jumpRegion[1], jumpRegion[0], regions[0]);
 		walk = new Animation(0.15f, regions[2], regions[3], regions[4]);
 		walk.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
+		jump.setPlayMode(Animation.PlayMode.LOOP_PINGPONG);
 
 		// figure out the width and height of the koala for collision
 		// detection and rendering by converting a koala frames pixel
@@ -288,7 +292,7 @@ public class Superkoalio extends ApplicationAdapter {
 				frame = walk.getKeyFrame(koala.stateTime);
 				break;
 			case Jumping:
-				frame = jump.getKeyFrame(koala.stateTime);
+				frame = jump.getKeyFrame(koala.stateTime, true);
 				break;
 		}
 
