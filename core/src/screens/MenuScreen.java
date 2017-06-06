@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.KoalioGame;
 
@@ -33,7 +34,7 @@ public class MenuScreen extends BaseScreen {
     /**
      * The play button you use to jump to the game screen.
      */
-    private TextButton play, credits;
+    private TextButton play, opcion, exit;
     private int height;
     private int width;
 
@@ -41,8 +42,8 @@ public class MenuScreen extends BaseScreen {
 
         super(game);
 
-        height = Gdx.graphics.getHeight();
-        width = Gdx.graphics.getWidth();
+        height = 180;
+        width = 320;
 
         stage = new Stage(new FitViewport(height, width));
 
@@ -53,6 +54,16 @@ public class MenuScreen extends BaseScreen {
         // button as well as the skin file. The background image for the button is in the skin
         // file.
         play = new TextButton("Jugar", skin);
+        opcion = new TextButton("Opciones", skin);
+        exit = new TextButton("Salir", skin);
+
+        play.setSize(80, 30);
+        opcion.setSize(80, 30);
+        exit.setSize(80, 30);
+
+        play.setPosition(70, 280);
+        opcion.setPosition(70, 200);
+        exit.setPosition(70, 140);
 
         // Also, create an image. Images are actors that only display some texture. Useful if you
         // want to display a texture in a Scene2D based screen but you don't want to rewrite code.
@@ -74,10 +85,24 @@ public class MenuScreen extends BaseScreen {
             }
         });
 
+        exit.addCaptureListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // Take me to the game screen!
+                System.exit(0);
+            }
+        });
+        exit.addCaptureListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.exit(0);
+            }
+        });
 
 
 
-        play.setSize(80, 30);
+
+
 
 
         stage.addActor(play);
